@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="index.css" />
+    <title>3D Pixi-depth</title>
+    <script src="pixi-5.2.0.min.js"></script>
+  </head>
+  <body>
+    <script>
+      window.onload = function () {
+        const winWidth = window.innerWidth;
+        const winHeight = window.innerHeight;
+
+        let app = new PIXI.Application({
+          width: winWidth,
+          height: winHeight,
+        });
+        document.body.appendChild(app.view);
+
+        let img = new PIXI.Sprite.from("pikachu.jpg");
+        img.width = winWidth;
+        img.height = winHeight;
+        app.stage.addChild(img);
+
+        depthMap = new PIXI.Sprite.from("pikachu-map.jpg");
+        app.stage.addChild(depthMap);
+
+        displacementFilter = new PIXI.filters.DisplacementFilter(depthMap);
+        app.stage.filters = [displacementFilter];
+
+        window.onmousemove = function (e) {
+          displacementFilter.scale.x = (winWidth / 2 - e.clientX) / 20;
+          displacementFilter.scale.y = (winHeight / 2 - e.clientY) / 20;
+        };
+      };
+    </script>
+  </body>
+</html>
